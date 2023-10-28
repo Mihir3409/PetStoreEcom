@@ -1,0 +1,145 @@
+{% include 'base/header.html' %}
+{% block content %}
+    <section class="section-content padding-y bg">
+        <div class="container">
+            <div class="row">
+                <aside class="col-lg-8">
+                    <h1>Details</h1>
+                    <table class="table table-striped">
+                        <thead>
+                            <th scope="col">Pet Name</th>
+                            <th scope="col">Pet Image</th>
+                            <th scope="col">Price</th>
+                        </thead>
+
+                        <tbody>
+                            {% for item in cart_item %}
+                                <tr>
+                                    <td>{{ item.pet.name }}</td>
+                                    <td>
+                                        <img src="{{ item.pet.image.url }}" alt="" width="100px" height="100px">
+                                    </td>
+
+                                    <td>{{ item.pet.price}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <h4 style="color: red;"><span> Total Amount</span> {{ total_amount }}</h4>
+                </aside>
+
+
+
+
+
+                <aside class="col-lg-4">
+                    <h3>Payments</h3>
+                    <div id="smart-button-container">
+
+                        <div style="text-align: center;">
+                  
+                          <div id="paypal-button-container"></div>
+                  
+                        </div>
+                  
+                      </div>
+                  
+                      <script src="https://www.paypal.com/sdk/js?client-id=AduFbBj7NqniSCMwRmycsOIu72aFJwfg6GL559H1cb9LZ8_rK4aQAeJgWztTUuBZrvqLjmXehYoUjvd0&enable-funding=venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+                  
+                      <script>
+                      
+                        var total_amt = {{ total_amount }}
+                        var order_number = "{{ order_number }}"
+                         // alert(order_number);
+                        function initPayPalButton() {
+                  
+                            paypal.Buttons({
+                  
+                            style: {
+                  
+                                shape: 'rect',
+                  
+                                color: 'gold',
+                  
+                                layout: 'vertical',
+                  
+                                label: 'paypal',
+                  
+                           
+                  
+                            },
+                  
+                  
+                  
+                            createOrder: function(data, actions) {
+                  
+                                return actions.order.create({
+                  
+                                purchase_units: [{"amount":{"currency_code":"USD","value":total_amt},order_number:order_number}]
+                  
+                                });
+                  
+                            },
+                  
+                  
+                  
+                          onApprove: function(data, actions) {
+                            return actions.order.capture().then(function(orderData) {
+                              var jsonData = JSON.stringify(orderData);
+                              $.ajax({
+                                url:"{% url 'orders:payments' %}",
+                                type:'POST',
+                                data:jsonData,
+                                contentType:'application/json',
+                                success:function(error){
+                                  console.log(response);
+                                },
+                                error:function(error){
+                                  console.log(error);
+                                }
+                              });
+                  
+                              // Full available details
+                  
+                              console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                  
+                  
+                  
+                              // Show a success message within this page, e.g.
+                  
+                              const element = document.getElementById('paypal-button-container');
+                  
+                              element.innerHTML = '';
+                  
+                              element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                              
+                  
+                  
+                              // Or go to another URL:  actions.redirect('thank_you.html');
+                  
+                  
+                            });
+                  
+                          },
+                  
+                  
+                  
+                          onError: function(err) {
+                  
+                            console.log(err);
+                  
+                          }
+                  
+                        }).render('#paypal-button-container');
+                  
+                      }
+                  
+                      initPayPalButton();
+                  
+                    </script>
+                                    
+                </aside>
+            </div>
+        </div>
+    </section>
+{% endblock %}

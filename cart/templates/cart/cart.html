@@ -1,0 +1,104 @@
+{% include 'base/header.html' %}
+{% block content %}
+  <form action="{% url 'orders:order_billing' %}">
+  <table class="table table-striped">
+    <thead>
+      <th scope="col">Pet Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+      <th scope="col">Total Price</th>
+      <th scope="col">Action</th>
+    </thead>
+    {% if flag %}
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td><img src="{{ item.pet.image.url }}" width="100px" height="100px">
+          <br/>
+          <h4>{{ item.pet.name }}</h4>
+          </td>
+          <td>
+            <input type="number" name="qty" min="0" value="{{ item.quantity }}"id="quantity{{ item.id }}" >
+          </td>
+          <td>
+            {{ item.pet.price }}
+          </td>
+          <td>
+            <input type="text" name="price" value="{{ item.totalprice }}" id="totalprice{{ item.id }}" readonly>
+          </td>
+          <td>
+            <a href="{% url 'deletecart' item.id %}" class="btn btn-danger" data-id="{{ item.id }}">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    {% else %}
+        <h4>No item Added in Cart Yet</h4>
+    {% endif %}
+  </table>
+   
+      <h4>Total Amount : <span id="totalamount"></span></h4>
+
+      <button type="submit">Proceed to Pay</button>
+      
+      </form>
+    
+  <script>
+    $(document).ready(function(){
+      $('form').submit(function(e){
+        e.preventDefault(); // Preventing to submit the form
+        var totalamount = parseFloat($("#totalamount").text()).toFixed(2);  // Total amount
+        window.location.href = $(this).attr('action')+'?totalamount='+totalamount;
+      });
+      // localStorage.clear();
+      $('input[name="qty"]').each(function(){
+        var id = $(this).closest('tr').find('a').data('id');
+        // alert(id);
+        var price = $(this).closest('tr').find('td:nth-child(3)').text();
+        var totalprice = parseFloat(price)*1;
+        $("#totalprice"+id).val(totalprice.toFixed(2));
+        $(this).val(1);
+
+      });
+
+      function CalculateTotalAmount(){
+        var totalamount = 0;
+        $('input[name="qty"]').each(function(){
+             var id = $(this).closest('tr').find('a').data('id');
+             var quantity = $(this).val();
+             var price = $(this).closest('tr').find('td:nth-child(3)').text();
+             var totalprice = parseFloat(price)*quantity;
+             $("#totalprice"+id).val(totalprice.toFixed(2));
+             totalamount += totalprice;
+        });
+        $("#totalamount").text(totalamount.toFixed(2));
+      }
+
+      $('input[name="qty"]').change(function(){
+        var quantity = $(this).val();
+        var price = $(this).closest('tr').find('td:nth-child(3)').text();
+        var id = $(this).closest('tr').find('a').data('id');
+
+        $.ajax({
+          url : '/cart/updatecart/' + id + '/',
+          method: 'POST',
+          data: {'qty': quantity,'price': price, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+          success:function(response){
+            $("#totalprice"+ id).val(response.totalprice);
+            CalculateTotalAmount();
+            var totalamount = $("#totalamount").text();
+            sessionStorage.setItem('total_amount',totalamount)   // Session Storage
+          },
+          error:function(){
+              alert("Some Error In Code")
+          }
+
+        });
+      
+      });
+      CalculateTotalAmount();
+    });
+  </script>
+{% endblock %}
+{% include 'base/footer.html' %}

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+{% load static %}
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+
+     <!-- Favicon -->
+
+     <link href="img/favicon.ico" rel="icon">
+
+
+     <!-- Google Web Fonts -->
+
+     <link rel="preconnect" href="https://fonts.gstatic.com">
+
+     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto:wght@700&display=swap" rel="stylesheet">  
+
+ 
+
+     <!-- Icon Font Stylesheet -->
+
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+     <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+
+ 
+
+     <!-- Libraries Stylesheet -->
+
+     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+ 
+
+ 
+
+    <link rel="stylesheet" href="{%static 'css/style.css'%}">
+
+    <!-- <link rel="stylesheet" href="{%static 'css/bootstrap.min.css'%}"> -->
+
+    <!--script src="{%static 'js/demo.js'%}"></script-->
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+</head>
+
+<body>
+
+     <!-- Topbar Start -->
+
+     <div class="container-fluid border-bottom d-none d-lg-block">
+
+        <div class="row gx-0">
+
+            <div class="col-lg-4 text-center py-2">
+
+                <div class="d-inline-flex align-items-center">
+
+                    <i class="bi bi-geo-alt fs-1 text-primary me-3"></i>
+
+                    <div class="text-start">
+
+                        <h6 class="text-uppercase mb-1">Our Office</h6>
+
+                        <span>123 Street, New York, USA</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4 text-center border-start border-end py-2">
+
+                <div class="d-inline-flex align-items-center">
+
+                    <i class="bi bi-envelope-open fs-1 text-primary me-3"></i>
+
+                    <div class="text-start">
+
+                        <h6 class="text-uppercase mb-1">Email Us</h6>
+
+                        <span>info@example.com</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4 text-center py-2">
+
+                <div class="d-inline-flex align-items-center">
+
+                    <i class="bi bi-phone-vibrate fs-1 text-primary me-3"></i>
+
+                    <div class="text-start">
+
+                        <h6 class="text-uppercase mb-1">Call Us</h6>
+
+                        <span>+012 345 6789</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Topbar End -->
+    <!-- Navbar Start -->
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-lable="Close"></button>
+                    <strong>{{ message }}</strong>
+                </div>
+
+            {% else %}
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-lable="Close"></button>
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow-sm py-3 py-lg-0 px-3 px-lg-0">
+
+        <a href="index.html" class="navbar-brand ms-lg-5">
+
+            <h1 class="m-0 text-uppercase text-dark"><i class="bi bi-shop fs-1 text-primary me-3"></i>Pet Shop</h1>
+
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+
+            <div class="navbar-nav ms-auto py-0">
+
+                <a href="index.html" class="nav-item nav-link active">Home</a>
+
+            
+                <a href="service.html" class="nav-item nav-link">Service</a>
+
+                <a href="product.html" class="nav-item nav-link">Product</a>
+                <a href="{% url 'cart-view' %}" class="nav-item nav-link">cart</a>
+
+
+                <div class="dropdown">
+
+                    <a href="#" class="nav-item nav-link dropdown-toggle" data-toggle="dropdown">Category</a>
+
+                    <div class="dropdown-menu">
+
+                        <a href="{% url 'dog-list' %}" class="dropdown-item">Dog</a>
+
+                        <a href="{% url 'cat-list' %}" class="dropdown-item">Cat</a>
+                       
+                    </div>
+
+                </div>
+
+                <form method="GET" action="{% url 'search' %}" class="form my-2 my-lg-0">
+                    <div class="input-group">
+                        <div class="form-outline">
+                            <div style="display: flex;">
+                                <input type="search" id="search" name="search"
+                                class="form-control" placeholder="Search Item">
+
+                                <button class="btn-info">Submit</button>
+                            </div>
+
+                        </div>
+                    </div>
+                 </form>
+
+                {% if user.is_authenticated%}
+                 <div class="dropdown">
+
+                    <a href="#" class="nav-item nav-link dropdown-toggle" data-toggle="dropdown">My Account</a>
+
+                    <div class="dropdown-menu">
+
+                        <a href="{% url 'my_orders' %}" class="dropdown-item">My Orders</a>
+
+                        <a href="" class="dropdown-item">My Profile</a>
+                       
+                    </div>
+
+                </div>
+                <a href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
+
+                <p><strong>Hey!! {{ request.user }}</strong></p>
+
+                {% else %}
+                 <a href="{% url 'login' %}" class="nav-item nav-link">Login</a>
+                 
+                 {% comment %} <a href="{% url 'register-page' %}" class="dropdown-item">Register</a> {% endcomment %}
+                <a href="{% url 'register-page' %}" class="nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5">Register <i class="bi bi-arrow-right"></i></a>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- Navbar End -->
+</body>
+</html>

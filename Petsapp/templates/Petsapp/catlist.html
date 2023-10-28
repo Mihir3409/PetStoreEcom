@@ -1,0 +1,194 @@
+{% include 'base/header.html' %}
+{% block content %}
+    <div class = "container">
+            <h4 style = "text-align: center; margin-top: 20px; margin-bottom: 20px;"> CATS
+                DATA</h4>
+
+                <div class = "row">
+                    {% for obj in objects %}
+                       <div class = "col-lg-3">
+                       <div class = "card" style="min-height: 200px; cursor: pointer;">
+                        <p>{{ obj.name }}</p>
+                        <img src="{{ obj.image.url }}" alt="Image Will come here" class="card-img-top" width="170px">
+                        <p class="card-text">{{ obj.description }}</p>
+                        <p>{{ obj.age }}</p>
+                        <p><strong style="color:red", Price: ></strong> {{ obj.price }}</p>
+                       </div>
+                       </div>
+                    {% endfor %}
+                </div>
+    </div>
+
+                
+{% endblock %}
+{% include 'base/footer.html' %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

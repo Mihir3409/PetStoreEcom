@@ -1,0 +1,48 @@
+{% include 'base/header.html' %}
+{% block content %}
+    <h3 class="text text-primary">ORDER HISTORY</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Order Number</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Grand Total</th>
+                <th scope="col">Item Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Item Price</th>
+                <th scope="col">Per Item Total Price</th>
+            </tr>
+        </thead>
+
+        {% if flag %}
+            {% for order_group in order_group %}
+                {% for item in order_group.items %}
+                    <tr>
+                        {% if forloop.first %}
+                            <td rowspan="{{ order_group.items|length }}" style="font-weight: bold;">{{ order_group.order_number }}</td>
+                            <td rowspan="{{ order_group.items|length }}">{{ order_group.order_date }}</td>
+                            <td rowspan="{{ order_group.items|length }}">
+                                <p class="bg-{{ order_group.status_badge_map }}">{{ order_group.status }}</p>
+                            </td>
+
+                            <td rowspan="{{ order_group.items|length }}">{{ order_group.grand_total }}</td>
+                        {% endif %}
+
+                    <td>{{ item.item_name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.item_price }}</td>
+                    <td>{{ item.total_price_per_item }}</td>
+
+                </tr>
+                {% endfor %}
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="6" class="text-center">
+                    <h4 class="text text-danger">No Items Ordered Yet.</h4>
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+{% endblock %}
